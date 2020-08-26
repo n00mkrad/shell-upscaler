@@ -73,7 +73,7 @@ class ESRGAN(object):
 
     def _process_file(self, input_path, output_path, models):
         input_name = os.path.basename(input_path)
-        print("Processing", input_name)
+        print("Processing ", input_name)
 
         # read input
         input_image = cv2.imread(input_path, cv2.IMREAD_UNCHANGED)
@@ -86,7 +86,8 @@ class ESRGAN(object):
 
         # apply all models from the list
         for model in models:
-            print("Applying model '%s'" % model.name())
+            #print("Applying '%s'" % model.name())
+            #print("Applying model...")
             upscaler = esrlupscale.RRDBNetUpscaler(model, self.torch)
             output_image = self._process_image(output_image, upscaler)
 
@@ -175,8 +176,9 @@ class ESRGAN(object):
 
             print("Model pass '%s'" % model_name)
 
-            output_dir = os.path.join(args.output, model_name)
-            os.makedirs(output_dir, exist_ok=True)
+            #output_dir = os.path.join(args.output, model_name)
+            output_dir = args.output
+            #os.makedirs(output_dir, exist_ok=True)
 
             if os.path.isdir(args.input):
                 for dirpath, _, filenames in os.walk(args.input):
@@ -184,7 +186,7 @@ class ESRGAN(object):
                         input_path = os.path.join(dirpath, filename)
 
                         input_path_rel = os.path.relpath(input_path, args.input)
-                        output_path_rel = os.path.splitext(input_path_rel)[0] + ".png"
+                        output_path_rel = os.path.splitext(input_path_rel)[0] + "-" + model_name + ".png"
                         output_path = os.path.join(output_dir, output_path_rel)
                         os.makedirs(os.path.dirname(output_path), exist_ok=True)
                         self._process_file(input_path, output_path, models)

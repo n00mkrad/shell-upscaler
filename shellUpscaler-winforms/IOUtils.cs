@@ -17,6 +17,18 @@ namespace shellUpscaler
             return dir;
         }
 
+        public static string GetTempDir ()
+        {
+            string dir = Path.Combine(GetAppDataDir(), "temp");
+            Directory.CreateDirectory(dir);
+            return dir;
+        }
+
+        public static void ClearTempDir ()
+        {
+            Directory.Delete(GetTempDir(), true);
+        }
+
         public static bool IsPathDirectory (string path)
         {
             if(path == null) throw new ArgumentNullException("path");
@@ -44,6 +56,25 @@ namespace shellUpscaler
                 return false;
 
             return true;
+        }
+
+        public static void Copy (string sourceDirectoryName, string targetDirectoryName)
+        {
+            Directory.CreateDirectory(targetDirectoryName);
+
+            DirectoryInfo source = new DirectoryInfo(sourceDirectoryName);
+            DirectoryInfo target = new DirectoryInfo(targetDirectoryName);
+
+            CopyWork(source, target);
+        }
+
+        private static void CopyWork (DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach(DirectoryInfo dir in source.GetDirectories())
+                CopyWork(dir, target.CreateSubdirectory(dir.Name));
+
+            foreach(FileInfo file in source.GetFiles())
+                file.CopyTo(Path.Combine(target.FullName, file.Name));
         }
     }
 }

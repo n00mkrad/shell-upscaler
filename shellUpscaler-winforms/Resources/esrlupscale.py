@@ -85,8 +85,8 @@ class TiledUpscaler(Upscaler):
 
                 tile_idx = y * tiles_x + x + 1
 
-                print("  Tile %d/%d (x=%d y=%d %dx%d)" % \
-                    (tile_idx, tiles_x * tiles_y, x, y, input_tile_width, input_tile_height))
+                print("Tile %d/%d" % \
+                    (tile_idx, tiles_x * tiles_y))
 
                 input_tile = input_image[input_start_x_pad:input_end_x_pad, input_start_y_pad:input_end_y_pad]
 

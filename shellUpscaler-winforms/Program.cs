@@ -49,6 +49,7 @@ namespace shellUpscaler
                 currentPath = args[1];
                 Application.Run(new UpscaleForm());
             }
+            Application.Exit();
         }
     }
 }
