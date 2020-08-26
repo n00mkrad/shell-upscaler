@@ -2,14 +2,12 @@
 Windows utility to upscale files or folders right from the explorer.  
 Acts as a GUI for [esrgan-launcher](https://github.com/ata4/esrgan-launcher).
 
-### Prerequisites
+# Prerequisites
 
 - Functional ESRGAN installation
 - At least one ESRGAN model in [ESRGAN PATH]/models/
 
-<br>
-
-### Installation
+# Installation
 
 ![](https://i.imgur.com/WrS4hoz.png)
 
@@ -21,16 +19,12 @@ Acts as a GUI for [esrgan-launcher](https://github.com/ata4/esrgan-launcher).
 
 You should now have the option "Upscale with ESRGAN" in the context menu when clicking on an image (JPG, PNG, etc.)
 
-<br>
-
-#### Important Notes
+# Important Notes
 
 - The shell integration will stop working if the executable was moved elsewhere. In this case, set it up again ("Unregister" then "Register")
 - There is no uninstaller, so in order to uninstall the program, use "Uninstall" and "Unregister" first
 
-<br>
-
-### Usage
+# Usage
 
 ![](https://i.imgur.com/wTZpd3x.pnghttps://i.imgur.com/wTZpd3x.png)
 
