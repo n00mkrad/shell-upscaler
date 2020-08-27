@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent ()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SetupForm));
             this.label1 = new System.Windows.Forms.Label();
             this.regBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -138,8 +139,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.regBtn);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SetupForm";
-            this.Text = "SetupForm";
+            this.Text = "ShellUpscaler Setup";
             this.Load += new System.EventHandler(this.SetupForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
