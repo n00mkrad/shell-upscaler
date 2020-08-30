@@ -197,7 +197,7 @@ namespace shellUpscaler
                 IOUtils.ReplaceInFilenamesDir(IOUtils.GetTempDir(IOUtils.TempFolder.Out), "-" + modelCombox.Text.Trim(), "");
             }
             IOUtils.Copy(IOUtils.GetTempDir(IOUtils.TempFolder.Out), Path.GetDirectoryName(Program.currentPath));
-            //IOUtils.ClearTempDir(IOUtils.TempFolder.Out);
+            IOUtils.ClearTempDir(IOUtils.TempFolder.Out);
         }
 
         private void modeCombox_SelectedIndexChanged (object sender, EventArgs e)
