@@ -29,6 +29,7 @@ namespace shellUpscaler
             CenterToScreen();
             InitCombox(modeCombox, 0);
             InitCombox(tilesizeCombox, 2);
+            InitCombox(overwriteCombox, 0);
             LoadModelList();
         }
 
@@ -53,22 +54,21 @@ namespace shellUpscaler
 
         private void runBtn_Click (object sender, EventArgs e)
         {
-            IOUtils.ClearTempDir();
+            IOUtils.ClearTempDir(IOUtils.TempFolder.Both);
 
-            string inpath = "\"" + Path.GetDirectoryName(Program.currentPath) + "\"";
-            string outpath = "\"" + IOUtils.GetTempDir() + "\"";
+            string inpath = "\"" + IOUtils.GetTempDir(IOUtils.TempFolder.In) + "\"";
+            string outpath = "\"" + IOUtils.GetTempDir(IOUtils.TempFolder.Out) + "\"";
+
+            bool overwrite = overwriteCombox.SelectedIndex == 1;
 
             if(singleImage)
-            {
-                CopyImageToTempLocation();
-                inpath = "\"" + IOUtils.GetTempDir() + "\"";
-                outpath = "\"" + Path.GetDirectoryName(Program.currentPath) + "\"";
-            }
+                CopyImageToTemp(overwrite);
+            else
+                CopyAllImagesToTemp(overwrite);
 
             string cmd = "/C cd /D \"" + Program.esrganPath + "\" & ";
             cmd += "python esrlmain.py " + inpath + " " + outpath + " --tilesize " + tilesizeCombox.Text.Trim()
                 + " --model models/" + modelCombox.Text.Trim() + ".pth";
-
             Console.WriteLine("CMD: " + cmd);
             Process esrganProcess = new Process();
             esrganProcess.StartInfo.UseShellExecute = false;
@@ -80,12 +80,11 @@ namespace shellUpscaler
             esrganProcess.OutputDataReceived += new DataReceivedEventHandler(OutputHandler);
             esrganProcess.ErrorDataReceived += new DataReceivedEventHandler(OutputHandler);
             esrganProcess.Start();
-            runBtn.Enabled = false;
+            DisableGUI();
             esrganProcess.BeginOutputReadLine();
             esrganProcess.BeginErrorReadLine();
             esrganProcess.WaitForExit();
-            if(!singleImage)
-                CopyImagesToOriginalLocation();
+            CopyImagesToOriginalLocation();
             Close();
         }
 
@@ -105,16 +104,39 @@ namespace shellUpscaler
                 MessageBox.Show("ESRGAN ran out of memory. Try reducing the tile size and avoid running programs in the background (especially games) that take up your VRAM.", "Error");
         }
 
-        void CopyImageToTempLocation ()
+        void DisableGUI ()
         {
-            IOUtils.ClearTempDir();
-            File.Copy(Program.currentPath, Path.Combine(IOUtils.GetTempDir(), Path.GetFileName(Program.currentPath)));
+            runBtn.Enabled = false;
+            modeCombox.Enabled = false;
+            modelCombox.Enabled = false;
+            tilesizeCombox.Enabled = false;
+            overwriteCombox.Enabled = false;
+        }
+
+        void CopyImageToTemp (bool moveInsteadOfCopy = false)
+        {
+            IOUtils.ClearTempDir(IOUtils.TempFolder.In);
+            if(moveInsteadOfCopy)
+                File.Move(Program.currentPath, Path.Combine(IOUtils.GetTempDir(IOUtils.TempFolder.In), Path.GetFileName(Program.currentPath)));
+            else
+                File.Copy(Program.currentPath, Path.Combine(IOUtils.GetTempDir(IOUtils.TempFolder.In), Path.GetFileName(Program.currentPath)));
+        }
+
+        void CopyAllImagesToTemp (bool moveInsteadOfCopy = false)
+        {
+            IOUtils.ClearTempDir(IOUtils.TempFolder.In);
+            IOUtils.Copy(Path.GetDirectoryName(Program.currentPath), IOUtils.GetTempDir(IOUtils.TempFolder.In), moveInsteadOfCopy);
         }
 
         void CopyImagesToOriginalLocation ()
         {
-            IOUtils.Copy(IOUtils.GetTempDir(), Path.GetDirectoryName(Program.currentPath));
-            IOUtils.ClearTempDir();
+            if(overwriteCombox.SelectedIndex == 1)
+            {
+                Console.WriteLine("Overwrite mode - removing suffix from filenames");
+                IOUtils.ReplaceInFilenamesDir(IOUtils.GetTempDir(IOUtils.TempFolder.Out), "-" + modelCombox.Text.Trim(), "");
+            }
+            IOUtils.Copy(IOUtils.GetTempDir(IOUtils.TempFolder.Out), Path.GetDirectoryName(Program.currentPath));
+            IOUtils.ClearTempDir(IOUtils.TempFolder.Out);
         }
 
         private void modeCombox_SelectedIndexChanged (object sender, EventArgs e)

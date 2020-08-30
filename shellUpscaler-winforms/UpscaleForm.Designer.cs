@@ -37,6 +37,8 @@
             this.runBtn = new System.Windows.Forms.Button();
             this.modeCombox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.overwriteCombox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // modelCombox
@@ -125,11 +127,33 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Mode:";
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 136);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(92, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Overwrite Images:";
+            // 
+            // overwriteCombox
+            // 
+            this.overwriteCombox.FormattingEnabled = true;
+            this.overwriteCombox.Items.AddRange(new object[] {
+            "No - Add Suffix To Upscaled Images",
+            "Yes - Overwrite Source Files"});
+            this.overwriteCombox.Location = new System.Drawing.Point(128, 133);
+            this.overwriteCombox.Name = "overwriteCombox";
+            this.overwriteCombox.Size = new System.Drawing.Size(244, 21);
+            this.overwriteCombox.TabIndex = 9;
+            // 
             // UpscaleForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 261);
+            this.Controls.Add(this.overwriteCombox);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.modeCombox);
             this.Controls.Add(this.runBtn);
@@ -157,6 +181,8 @@
         private System.Windows.Forms.Button runBtn;
         private System.Windows.Forms.ComboBox modeCombox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox overwriteCombox;
     }
 }
 
