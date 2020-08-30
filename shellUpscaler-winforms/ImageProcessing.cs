@@ -43,6 +43,9 @@ namespace shellUpscaler
 
             foreach(FileInfo file in files)
             {
+                if(GetTrimmedExtension(file) == "png")
+                    return;
+
                 Format format = Format.PngOpti;
 
                 if(GetTrimmedExtension(file) == "jpg" || GetTrimmedExtension(file) == "jpeg")
@@ -147,24 +150,32 @@ namespace shellUpscaler
                 ext = "dds";
             }
 
+            // The following code kinda sucks and should be way more compact
+
             if(appendExtension)
             {
                 string oldExt = Path.GetExtension(path);
                 Console.WriteLine("Appending old extension; writing image to " + Path.ChangeExtension(path, null) + oldExt + "." + ext);
                 img.Write(Path.ChangeExtension(path, null) + oldExt + "." + ext);
+                if(deleteSource)
+                {
+                    if(Path.ChangeExtension(path, null) + oldExt + "." + ext == path)
+                        return;     // Return if source and target paths match
+                    Console.WriteLine("Deleting source file: " + path);
+                    File.Delete(path);
+                }
             }
             else
             {
                 img.Write(Path.ChangeExtension(path, ext));
                 Console.WriteLine("Writing image to " + Path.ChangeExtension(path, ext));
-            }
-
-            if(deleteSource)
-            {
-                if(Path.GetExtension(path).Replace(".", "") == ext.Replace(".", ""))
-                    return;     // Return if source and target extensions match
-                Console.WriteLine("Deleting source file: " + path);
-                File.Delete(path);
+                if(deleteSource)
+                {
+                    if(Path.ChangeExtension(path, ext) == path)
+                        return;     // Return if source and target paths match
+                    Console.WriteLine("Deleting source file: " + path);
+                    File.Delete(path);
+                }
             }
         }
     }
