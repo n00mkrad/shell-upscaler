@@ -12,6 +12,8 @@ namespace shellUpscaler
         public static string currentPath;
         public static string esrganPath;
 
+        public static string currentModel;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -50,6 +52,11 @@ namespace shellUpscaler
                 Application.Run(new UpscaleForm());
             }
             Application.Exit();
+        }
+
+        public static async Task PutTaskDelay ()
+        {
+            await Task.Delay(50);
         }
     }
 }

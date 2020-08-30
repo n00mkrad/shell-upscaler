@@ -73,7 +73,7 @@ class ESRGAN(object):
 
     def _process_file(self, input_path, output_path, models):
         input_name = os.path.basename(input_path)
-        print("Processing ", input_name)
+        print("Processing", input_name)
 
         # read input
         input_image = cv2.imread(input_path, cv2.IMREAD_UNCHANGED)
@@ -92,7 +92,7 @@ class ESRGAN(object):
             output_image = self._process_image(output_image, upscaler)
 
         # write output
-        cv2.imwrite(output_path, output_image)
+        cv2.imwrite(output_path, output_image, [cv2.IMWRITE_PNG_COMPRESSION, 8])
 
     def _parse_model(self, model_args):
         models = []
